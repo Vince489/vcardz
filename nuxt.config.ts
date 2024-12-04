@@ -3,8 +3,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss', 
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
+    '@nuxt/icon',
   ],
   googleFonts: {
     families: {
@@ -13,7 +14,3 @@ export default defineNuxtConfig({
     display: 'swap',
   },
 })
-
-
-
-
