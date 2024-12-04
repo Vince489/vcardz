@@ -1,77 +1,66 @@
 <template>
   <div class="px-2 lg:px-6 max-w-screen-lg mx-auto">
     <!-- Navbar container -->
-    <nav id="Navbar" class="pt-1 z-40 bg-gray-500 fixed inset-x-0">
-      <div class="px-4 pb-2 mx-auto">
-        <div class="flex justify-between">
-          <!-- Left side with logo and links -->
-          <div class="flex space-x-4">
-            <!-- Logo -->
-            <div>
-              <a href="/" class="flex items-center py-3 px-3 text-gray-300">
-                <img src="" alt="Logo" class="h-8" />
-              </a>
-            </div>
-            <!-- Main navigation -->
-            <div class="hidden md:flex items-center space-x-3">
-              <a href="/" class="font-semibold py-3 px-3 text-lg text-gray-100">Home</a>
-              <a href="/#about" class="font-semibold py-3 px-3 text-lg text-gray-100">About</a>
-              <a href="/#contact" class="font-semibold py-3 px-3 text-lg text-gray-100">Contact</a>
-            </div>
-          </div>
-          <!-- Mobile menu button -->
-          <div ref="menuBtn" class="text-gray-100 md:hidden flex items-center space-x-2">
-            <button @click="toggleMenu" class="mobile-menu-button border border-gray-300 rounded-md p-1">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            </button>
-          </div>
+    <nav id="Navbar" class="bg-[rgb(47,118,176)] fixed inset-x-0 z-50">
+      <div class="flex justify-between items-center py-3 px-4 md:px-48">
+        <!-- Left side with plain text logo -->
+        <div>
+          <a href="/" class="text-white font-sans font-bold text-lg">LOGO</a>
         </div>
+        
+        <!-- Main navigation links for larger screens -->
+        <div class="hidden md:flex space-x-6">
+          <a href="/#about" class="text-gray-100 font-semibold">About</a>
+          <a href="/#contact" class="text-gray-100 font-semibold">Contact</a>
+        </div>
+
+        <!-- Right side with Log In and Register buttons -->
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="/#login" class="text-gray-100 font-semibold">Log In</a>
+          <a href="/#register" class="px-4 py-1 border border-white text-gray-100 rounded hover:bg-white hover:text-[#1e7fce] transition">
+            REGISTER
+          </a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <button @click="toggleMenu" class="text-gray-100 md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
       </div>
 
-      <!-- Mobile menu -->
+      <!-- Mobile sidebar menu -->
       <div 
-        :class="{ 'transform translate-x-0': toggleMenuState, 'transform translate-x-full': !toggleMenuState }" 
-        ref="mobileMenu" 
-        class="bg-gray-700 mobile-menu md:hidden transition-transform duration-300 fixed right-0 top-0 h-full w-80 overflow-y-auto rounded-tl-xl rounded-bl-xl border-l border-gray-500"
+        :class="{ 'translate-x-0': menuOpen, 'translate-x-full': !menuOpen }" 
+        class="fixed right-0 top-0 h-full w-80 bg-[#205785] border-l border-gray-500 rounded-tl-xl rounded-bl-xl transition-transform duration-300 ease-in-out transform md:hidden z-40 overflow-y-auto"
       >
         <div class="px-4 py-4 flex flex-col">
-          <a href="/" class="text-gray-300 hover:bg-gray-600 hover:rounded py-2 px-4">Home</a>
-          <a href="/#about" class="text-gray-300 hover:bg-gray-600 hover:rounded py-2 px-4">About</a>
-          <a href="/#contact" class="text-gray-300 hover:bg-gray-600 hover:rounded py-2 px-4">Contact</a>
+          <a @click="toggleMenu" href="/" class="text-gray-300 hover:bg-gray-600 py-2 px-4 rounded">Home</a>
+          <a @click="toggleMenu" href="/#about" class="text-gray-300 hover:bg-gray-600 py-2 px-4 rounded">About</a>
+          <a @click="toggleMenu" href="/#contact" class="text-gray-300 hover:bg-gray-600 py-2 px-4 rounded">Contact</a>
+          <a @click="toggleMenu" href="/#login" class="text-gray-300 hover:bg-gray-600 py-2 px-4 rounded">Log In</a>
+          <a @click="toggleMenu" href="/#register" class="px-4 py-1 border border-white text-gray-300 rounded hover:bg-white hover:text-[#1e7fce] transition">
+            REGISTER
+          </a>
         </div>
       </div>
     </nav>
+
+    <!-- Overlay for mobile sidebar -->
+    <div 
+      v-if="menuOpen" 
+      @click="toggleMenu" 
+      class="fixed inset-0 bg-black opacity-50 md:hidden z-30"
+    ></div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref } from 'vue';
 
-const toggleMenuState = ref(false);
-const menuBtn = ref(null);
-const mobileMenu = ref(null);
-
+const menuOpen = ref(false);
 function toggleMenu() {
-  toggleMenuState.value = !toggleMenuState.value;
+  menuOpen.value = !menuOpen.value;
 }
-
-const handleClick = (e) => {
-  if (mobileMenu.value && !menuBtn.value.contains(e.target)) {
-    toggleMenuState.value = false;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("click", handleClick);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("click", handleClick);
-});
 </script>
-
-<style>
-/* Optional styles for better layout */
-</style>
